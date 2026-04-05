@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AG Automation — The AI System Built for Canadian Trades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#080F1C;
+  --navy2:#0D1B2E;
+  --navy3:#122040;
+  --blue:#1A4F8A;
+  --blue2:#2266B8;
+  --amber:#F0A500;
+  --amber2:#FFBE3C;
+  --teal:#12916B;
+  --teal2:#16B882;
+  --red:#D94040;
+  --gray50:#F5F6F8;
+  --gray100:#E8EBF0;
+  --gray300:#B0B8C8;
+  --gray500:#6B7487;
+  --gray700:#323A4A;
+  --white:#FFFFFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--gray50);color:var(--gray700);line-height:1.65;overflow-x:hidden}
+
+/* ─── TICKER ─── */
+.ticker{background:var(--amber);padding:9px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:tick 28s linear infinite;gap:0}
+.ticker-item{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.6px;color:var(--navy);padding:0 40px;text-transform:uppercase}
+.ticker-sep{color:var(--navy);opacity:.35}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── NAV ─── */
+.nav{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.07);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.logo-box{background:var(--amber);border-radius:7px;padding:5px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;color:var(--navy);letter-spacing:.5px}
+.logo-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);letter-spacing:.3px}
+.logo-name span{color:var(--amber)}
+.nav-cta{display:inline-flex;align-items:center;gap:7px;background:var(--amber);color:var(--navy);font-weight:700;font-size:13px;padding:9px 20px;border-radius:100px;text-decoration:none;transition:transform .15s}
+.nav-cta:hover{transform:translateY(-1px)}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);position:relative;overflow:hidden;padding:80px 24px 90px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 40%,rgba(26,79,138,.35) 0%,transparent 70%)}
+.hero-bg2{position:absolute;bottom:-100px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(240,165,0,.06) 0%,transparent 70%)}
+.hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.3);border-radius:100px;padding:6px 16px;margin-bottom:28px}
+.hero-eyebrow .blink{width:7px;height:7px;background:var(--amber2);border-radius:50%;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.hero-eyebrow span{font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--amber2)}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(40px,7vw,72px);font-weight:900;line-height:.97;letter-spacing:-1px;color:var(--white);margin-bottom:24px}
+.hero h1 .hl{color:var(--amber);display:block}
+.hero h1 .dim{color:rgba(255,255,255,.45)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.62);max-width:540px;line-height:1.75;margin-bottom:40px}
+.hero-sub strong{color:var(--white);font-weight:600}
+.hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn-hero{display:inline-flex;align-items:center;gap:9px;background:var(--amber);color:var(--navy);font-weight:700;font-size:15px;padding:15px 30px;border-radius:100px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,165,0,.3)}
+.btn-ghost{font-size:14px;color:rgba(255,255,255,.45);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:2px;transition:color .15s}
+.btn-ghost:hover{color:rgba(255,255,255,.75)}
+.hero-proof{display:flex;align-items:center;gap:20px;margin-top:40px;flex-wrap:wrap}
+.hp-item{display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(255,255,255,.45)}
+.hp-dot{width:6px;height:6px;background:var(--teal2);border-radius:50%}
+
+/* ─── FOMO SECTION ─── */
+.fomo{background:var(--navy2);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.fomo-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.sec-tag{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.fomo h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:900;color:var(--white);line-height:1.05;margin-bottom:16px}
+.fomo-lead{font-size:15px;color:rgba(255,255,255,.55);max-width:540px;margin-bottom:40px;line-height:1.75}
+.fomo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:rgba(255,255,255,.07);border-radius:16px;overflow:hidden;margin-bottom:40px}
+.fomo-stat{background:var(--navy3);padding:28px 24px}
+.fomo-stat .fn{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:var(--amber);line-height:1}
+.fomo-stat .fl{font-size:13px;color:rgba(255,255,255,.5);margin-top:7px;line-height:1.5}
+.ai-bar{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px 28px}
+.ab-title{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.ab-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.5px}
+.ab-row{margin-bottom:14px}
+.ab-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.ab-name{color:rgba(255,255,255,.65)}
+.ab-pct{font-weight:600;color:var(--white)}
+.ab-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.ab-fill{height:100%;border-radius:4px;transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+.fill-you{background:rgba(255,255,255,.15)}
+.fill-comp{background:linear-gradient(90deg,var(--teal),var(--teal2))}
+.fill-early{background:linear-gradient(90deg,var(--blue),var(--blue2))}
+.ab-note{font-size:12px;color:rgba(255,255,255,.35);margin-top:16px;font-style:italic}
+
+/* ─── PROBLEM ─── */
+.problem{background:var(--white)}
+.problem-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.problem h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--navy);line-height:1.07;margin-bottom:14px}
+.problem-lead{font-size:15px;color:var(--gray500);max-width:520px;margin-bottom:36px}
+.prob-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:36px}
+.pc{background:var(--gray50);border:1px solid var(--gray100);border-radius:14px;padding:24px 20px;position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.pc-red::before{background:var(--red)}
+.pc-amber::before{background:var(--amber)}
+.pc-blue::before{background:var(--blue2)}
+.pc-num{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;line-height:1;margin-bottom:8px}
+.pc-red .pc-num{color:var(--red)}
+.pc-amber .pc-num{color:var(--amber)}
+.pc-blue .pc-num{color:var(--blue2)}
+.pc-text{font-size:13px;color:var(--gray500);line-height:1.55}
+.scenario-box{background:var(--navy);border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:520px){.scenario-box{grid-template-columns:1fr}}
+.sb-col .sb-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.sb-col:first-child .sb-label{color:var(--red)}
+.sb-col:last-child .sb-label{color:var(--teal2)}
+.sb-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:11px}
+.sb-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.icon-bad{background:rgba(217,64,64,.15);color:var(--red)}
+.icon-good{background:rgba(18,145,107,.15);color:var(--teal2)}
+.sb-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.5}
+
+/* ─── WHO WE SERVE ─── */
+.serve{background:var(--gray50);border-top:1px solid var(--gray100)}
+.serve-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.serve h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--navy);margin-bottom:14px}
+.serve-lead{font-size:15px;color:var(--gray500);max-width:500px;margin-bottom:36px}
+.industry-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
+.ind-card{background:var(--white);border:1px solid var(--gray100);border-radius:14px;padding:20px 16px;text-align:center;transition:border-color .2s,transform .15s;cursor:default}
+.ind-card:hover{border-color:var(--blue2);transform:translateY(-2px)}
+.ind-icon{font-size:28px;margin-bottom:10px}
+.ind-name{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:3px}
+.ind-sub{font-size:11px;color:var(--gray500)}
+
+/* ─── DEMO ─── */
+.demo-sec{background:var(--navy);border-top:1px solid rgba(255,255,255,.06)}
+.demo-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.demo-sec .sec-tag{color:var(--amber)}
+.demo-sec h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--white);margin-bottom:14px}
+.demo-sec .demo-lead{font-size:15px;color:rgba(255,255,255,.5);max-width:520px;margin-bottom:36px}
+.demo-layout{display:grid;grid-template-columns:185px 1fr;gap:36px;align-items:start}
+@media(max-width:540px){.demo-layout{grid-template-columns:1fr}.phone-col{display:flex;justify-content:center}}
+/* phone */
+.phone-frame{width:182px;background:#0a0a0a;border-radius:32px;padding:9px;border:5px solid #1a1a1a;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pnotch{width:52px;height:7px;background:#181818;border-radius:4px;margin:0 auto 7px}
+.pscreen{background:#1c1c1e;border-radius:23px;overflow:hidden;min-height:350px;display:flex;flex-direction:column}
+.pbar{display:flex;justify-content:space-between;padding:7px 12px;font-size:9px;color:#555}
+.phead{background:#1c1c1e;padding:9px 12px 11px;border-bottom:.5px solid #2c2c2c;display:flex;align-items:center;gap:9px}
+.pav{width:30px;height:30px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.pname{font-size:10px;color:#e0e0e0;font-weight:600}
+.psub{font-size:9px;color:#666;margin-top:1px}
+.pmsgs{flex:1;padding:10px;display:flex;flex-direction:column;gap:7px;overflow:hidden}
+.pm{max-width:85%;font-size:9.5px;padding:6px 9px;border-radius:13px;line-height:1.45;opacity:0;transform:translateY(5px);transition:opacity .4s,transform .4s}
+.pm.out{background:var(--blue);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.pm.in{background:#2c2c2c;color:#ddd;align-self:flex-start;border-bottom-left-radius:3px}
+.pm.vis{opacity:1;transform:none}
+.pmt{font-size:7.5px;opacity:.45;margin-top:3px}
+.pmt.r{text-align:right}
+.ptyp{display:flex;gap:3px;align-items:center;padding:7px 9px;background:#2c2c2c;border-radius:13px;align-self:flex-start;opacity:0;transition:opacity .3s}
+.ptyp.on{opacity:1}
+.pd{width:5px;height:5px;background:#666;border-radius:50%;animation:pd 1.1s infinite}
+.pd:nth-child(2){animation-delay:.18s}.pd:nth-child(3){animation-delay:.36s}
+@keyframes pd{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* steps */
+.steps-col{display:flex;flex-direction:column;gap:16px}
+.step{display:flex;gap:14px;align-items:flex-start;opacity:.22;transition:opacity .45s}
+.step.on{opacity:1}
+.step-ic{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;transition:background .4s}
+.step.on .step-ic{background:rgba(18,145,107,.18)}
+.step-t{font-size:13px;font-weight:600;color:rgba(255,255,255,.95)}
+.step-s{font-size:12px;color:rgba(255,255,255,.45);margin-top:2px}
+.speed-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(22,184,130,.15);color:var(--teal2);font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;margin-top:8px;opacity:0;transition:opacity .4s}
+.speed-pill.on{opacity:1}
+.sp-dot{width:5px;height:5px;background:var(--teal2);border-radius:50%;animation:pd 1.1s infinite}
+.lead-captured{background:rgba(22,184,130,.1);border:1px solid rgba(22,184,130,.25);border-radius:10px;padding:12px 14px;margin-top:4px;opacity:0;transition:opacity .45s}
+.lead-captured.on{opacity:1}
+.lc-top{font-size:11px;font-weight:600;color:var(--teal2);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.lc-detail{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5}
+.run-btn{background:var(--amber);color:var(--navy);border:none;border-radius:100px;padding:12px 24px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:transform .15s,background .15s;margin-top:8px}
+.run-btn:hover{transform:translateY(-1px);background:var(--amber2)}
+.run-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ─── SERVICES ─── */
+.services{background:var(--white)}
+.services-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.services h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--navy);margin-bottom:14px}
+.svc-lead{font-size:15px;color:var(--gray500);max-width:520px;margin-bottom:36px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.svc{background:var(--gray50);border:1.5px solid var(--gray100);border-radius:16px;padding:24px 20px;position:relative;transition:border-color .2s,transform .15s}
+.svc:hover{border-color:var(--blue2);transform:translateY(-2px)}
+.svc.featured{border-color:var(--amber);background:linear-gradient(135deg,#FFFBEF,var(--gray50))}
+.svc-badge{position:absolute;top:-1px;right:18px;background:var(--amber);color:var(--navy);font-size:10px;font-weight:700;padding:3px 10px;border-radius:0 0 8px 8px;letter-spacing:.4px}
+.svc-icon{font-size:26px;margin-bottom:12px}
+.svc-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.svc-desc{font-size:13px;color:var(--gray500);line-height:1.6;margin-bottom:14px}
+.svc-bullets{list-style:none}
+.svc-bullets li{font-size:12px;color:var(--gray700);padding:3px 0;display:flex;align-items:flex-start;gap:6px}
+.svc-bullets li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0;margin-top:1px}
+.svc-cta{display:inline-flex;align-items:center;gap:6px;color:var(--blue2);font-size:12px;font-weight:600;margin-top:14px;text-decoration:none;border-bottom:1px solid rgba(34,102,184,.3);padding-bottom:1px}
+
+/* ─── HOW IT WORKS ─── */
+.hiw{background:var(--navy2)}
+.hiw-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.hiw h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--white);margin-bottom:14px}
+.hiw-lead{font-size:15px;color:rgba(255,255,255,.5);max-width:520px;margin-bottom:40px}
+.hiw-steps{display:flex;flex-direction:column;gap:0}
+.hiw-step{display:grid;grid-template-columns:56px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.07);position:relative}
+.hiw-step:last-child{border-bottom:none}
+.hs-num{width:44px;height:44px;border-radius:50%;background:rgba(240,165,0,.12);border:2px solid rgba(240,165,0,.3);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--amber);flex-shrink:0}
+.hs-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:6px}
+.hs-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:10px}
+.hs-tag{display:inline-flex;background:rgba(240,165,0,.12);color:var(--amber);font-size:11px;font-weight:600;padding:3px 12px;border-radius:100px}
+
+/* ─── GUARANTEE ─── */
+.guarantee{background:var(--navy3);border-top:3px solid var(--amber);border-bottom:3px solid var(--amber)}
+.guarantee-inner{max-width:760px;margin:0 auto;padding:72px 24px;text-align:center}
+.gtag{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.guarantee h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,54px);font-weight:900;color:var(--white);line-height:1.05;margin-bottom:20px}
+.guarantee h2 em{color:var(--amber);font-style:normal;display:block}
+.guarantee-body{font-size:16px;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto 36px;line-height:1.8}
+.guarantee-body strong{color:var(--white);font-weight:600}
+.g-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin-bottom:36px;text-align:left}
+.g-pillar{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px}
+.g-pillar .gp-icon{font-size:22px;margin-bottom:8px}
+.g-pillar .gp-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.g-pillar .gp-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.g-stamp{display:inline-flex;flex-direction:column;align-items:center;background:var(--amber);color:var(--navy);border-radius:50%;width:130px;height:130px;justify-content:center;padding:12px;margin:0 auto}
+.g-stamp .gs-top{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.g-stamp .gs-big{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;line-height:1.1;text-align:center;margin:4px 0}
+.g-stamp .gs-bot{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+/* ─── ABOUT ─── */
+.about{background:var(--white)}
+.about-inner{max-width:760px;margin:0 auto;padding:72px 24px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:540px){.about-grid{grid-template-columns:1fr}}
+.about h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--navy);margin-bottom:16px}
+.about-body{font-size:14px;color:var(--gray500);line-height:1.75;margin-bottom:20px}
+.about-details{display:flex;flex-direction:column;gap:10px}
+.ad-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--gray700)}
+.ad-icon{width:28px;height:28px;background:var(--gray50);border:1px solid var(--gray100);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.about-card{background:var(--navy);border-radius:20px;padding:32px 28px;color:var(--white)}
+.ac-tag{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+.ac-stat{margin-bottom:18px}
+.ac-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--amber);line-height:1}
+.ac-label{font-size:12px;color:rgba(255,255,255,.45);margin-top:3px}
+.ac-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:18px 0}
+.ac-web{font-size:13px;color:rgba(255,255,255,.6)}
+.ac-web a{color:var(--amber2);text-decoration:none;font-weight:600}
+
+/* ─── FAQ ─── */
+.faq{background:var(--gray50);border-top:1px solid var(--gray100)}
+.faq-inner{max-width:680px;margin:0 auto;padding:72px 24px}
+.faq h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;color:var(--navy);margin-bottom:36px;text-align:center}
+.faq-item{border-bottom:1px solid var(--gray100);padding:20px 0;cursor:pointer}
+.faq-item:last-child{border-bottom:none}
+.fq{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.fq-q{font-size:15px;font-weight:600;color:var(--navy);line-height:1.4}
+.fq-icon{font-size:18px;color:var(--blue2);flex-shrink:0;transition:transform .25s;margin-top:1px}
+.fq-a{font-size:14px;color:var(--gray500);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .35s ease,margin .25s}
+.faq-item.open .fq-icon{transform:rotate(45deg)}
+.faq-item.open .fq-a{max-height:200px;margin-top:12px}
+
+/* ─── CTA FOOTER ─── */
+.cta-footer{background:var(--navy);position:relative;overflow:hidden}
+.cta-footer::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(240,165,0,.08) 0%,transparent 65%)}
+.cta-inner{max-width:680px;margin:0 auto;padding:80px 24px;text-align:center;position:relative;z-index:1}
+.cta-footer h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,6vw,58px);font-weight:900;color:var(--white);line-height:1.02;margin-bottom:16px}
+.cta-footer h2 span{color:var(--amber);display:block}
+.cta-footer p{font-size:15px;color:rgba(255,255,255,.5);max-width:440px;margin:0 auto 36px;line-height:1.75}
+.cta-big-btn{display:inline-flex;align-items:center;gap:10px;background:var(--amber);color:var(--navy);font-weight:700;font-size:17px;padding:18px 40px;border-radius:100px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.cta-big-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(240,165,0,.3)}
+.cta-note{font-size:12px;color:rgba(255,255,255,.25);margin-top:20px}
+.cta-links{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:36px;flex-wrap:wrap}
+.cta-link{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none}
+.cta-link:hover{color:rgba(255,255,255,.7)}
+
+/* ─── SITE FOOTER ─── */
+.site-footer{background:#060C15;padding:32px 24px}
+.sf-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;gap:16px}
+.sf-left{display:flex;align-items:center;gap:12px}
+.sf-logo{background:var(--amber);border-radius:6px;padding:4px 9px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;color:var(--navy)}
+.sf-info{font-size:12px;color:rgba(255,255,255,.25);line-height:1.6}
+.sf-info a{color:rgba(255,255,255,.4);text-decoration:none}
+.sf-right{font-size:12px;color:rgba(255,255,255,.2);text-align:right}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item">AI is changing every industry <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Your competitors are already automating <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Every missed call is revenue walking out the door <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Trades companies across Canada are going digital <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Don't get left behind — the AI era is now <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">AG Automation — built for Canadian trades <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">AI is changing every industry <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Your competitors are already automating <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Every missed call is revenue walking out the door <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Trades companies across Canada are going digital <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Don't get left behind — the AI era is now <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">AG Automation — built for Canadian trades <span class="ticker-sep">·</span></span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="logo-box">AG</div>
+    <div class="logo-name"><span>AG</span> Automation</div>
+  </div>
+  <a href="#book" class="nav-cta">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 1v2M9 1v2M1 5h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Book a Free Call
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-bg2"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="blink"></div><span>Canada's AI Agency for Trades &amp; Small Business</span></div>
+    <h1>
+      <span class="dim">Your team is on the job.</span>
+      <span class="hl">Your next client just hung up.</span>
+    </h1>
+    <p class="hero-sub">
+      While your technicians are doing the work, <strong>your phone is losing business.</strong> AG Automation builds AI-powered systems that respond to missed calls, follow up on leads, and market your business — automatically, 24/7, without adding a single person to your payroll.
+    </p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-hero">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="currentColor"/></svg>
+        Watch the live demo
+      </a>
+      <a href="#book" class="btn-ghost">Book a free call instead →</a>
+    </div>
+    <div class="hero-proof">
+      <div class="hp-item"><div class="hp-dot"></div> Built for Canadian trades</div>
+      <div class="hp-item"><div class="hp-dot"></div> Live in 48 hours</div>
+      <div class="hp-item"><div class="hp-dot"></div> If you don't love it — you don't pay</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOMO SECTION -->
+<section class="fomo">
+  <div class="fomo-inner">
+    <div class="sec-tag">⚠ The AI shift is already happening</div>
+    <h2>Your competitor down the street<br>just got an unfair advantage.</h2>
+    <p class="fomo-lead">AI-powered automation is no longer a "big business" thing. Trades companies your size are quietly installing these systems right now — and capturing the leads you're missing. The window to get ahead is closing fast.</p>
+    <div class="fomo-grid">
+      <div class="fomo-stat">
+        <div class="fn">73%</div>
+        <div class="fl">of Canadian small businesses plan to adopt AI tools within the next 12 months</div>
+      </div>
+      <div class="fomo-stat">
+        <div class="fn">9×</div>
+        <div class="fl">more likely to close a lead if you respond within 5 minutes vs. 30+ minutes</div>
+      </div>
+      <div class="fomo-stat">
+        <div class="fn">$47K</div>
+        <div class="fl">average annual revenue lost by a trades company from missed calls and slow follow-up</div>
+      </div>
+      <div class="fomo-stat">
+        <div class="fn">#1</div>
+        <div class="fl">reason customers switch trades companies: "They never called me back"</div>
+      </div>
+    </div>
+    <div class="ai-bar">
+      <div class="ab-title">
+        AI adoption in Canadian trades — where do you stand?
+        <span class="ab-badge">LIVE TREND</span>
+      </div>
+      <div class="ab-row">
+        <div class="ab-label"><span class="ab-name">Most of your competitors</span><span class="ab-pct" id="pct1">0%</span></div>
+        <div class="ab-track"><div class="ab-fill fill-comp" id="bar1" style="width:0%"></div></div>
+      </div>
+      <div class="ab-row">
+        <div class="ab-label"><span class="ab-name">Early adopters (pulling ahead)</span><span class="ab-pct" id="pct2">0%</span></div>
+        <div class="ab-track"><div class="ab-fill fill-early" id="bar2" style="width:0%"></div></div>
+      </div>
+      <div class="ab-row">
+        <div class="ab-label"><span class="ab-name">Businesses not yet using AI</span><span class="ab-pct" id="pct3">0%</span></div>
+        <div class="ab-track"><div class="ab-fill fill-you" id="bar3" style="width:0%"></div></div>
+      </div>
+      <div class="ab-note">Source: BDC 2024 Canadian SMB Technology Report. The gap between adopters and non-adopters is widening every quarter.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-inner">
+    <div class="sec-tag" style="color:var(--red)">The real cost of doing nothing</div>
+    <h2>Every voicemail is a job<br>going to your competition.</h2>
+    <p class="problem-lead">You're great at the work. But while you're on the tools, calls are going unanswered — and those callers are not waiting around.</p>
+    <div class="prob-cards">
+      <div class="pc pc-red">
+        <div class="pc-num">78%</div>
+        <div class="pc-text">of callers contact a competitor when their first call goes unanswered</div>
+      </div>
+      <div class="pc pc-amber">
+        <div class="pc-num">5 min</div>
+        <div class="pc-text">is your window — leads responded to this fast convert 9× more often</div>
+      </div>
+      <div class="pc pc-blue">
+        <div class="pc-num">3–6</div>
+        <div class="pc-text">jobs per month the average trades company loses to missed-call blindness</div>
+      </div>
+    </div>
+    <div class="scenario-box">
+      <div class="sb-col">
+        <div class="sb-label">Without AG Automation</div>
+        <div class="sb-item"><div class="sb-icon icon-bad">✕</div><div class="sb-text">Customer calls while you're on a job. Goes to voicemail.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-bad">✕</div><div class="sb-text">No follow-up. Customer Googles the next contractor.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-bad">✕</div><div class="sb-text">You find out when you check missed calls at 6pm. Job's already gone.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-bad">✕</div><div class="sb-text">This happens 3–6 times every week. You never know what you lost.</div></div>
+      </div>
+      <div class="sb-col">
+        <div class="sb-label">With AG Automation</div>
+        <div class="sb-item"><div class="sb-icon icon-good">✓</div><div class="sb-text">Customer calls. You're on a job. System detects the missed call instantly.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-good">✓</div><div class="sb-text">Auto-text sent in under 60 seconds with your business name.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-good">✓</div><div class="sb-text">Customer replies with their job details. Lead is captured and logged.</div></div>
+        <div class="sb-item"><div class="sb-icon icon-good">✓</div><div class="sb-text">You get a notification. Call them back on your timeline. Job booked.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section class="serve">
+  <div class="serve-inner">
+    <div class="sec-tag">Industries we work with</div>
+    <h2>Built for the people who<br>keep Canada running.</h2>
+    <p class="serve-lead">If your business runs on calls, referrals, and reputation — we were built for you.</p>
+    <div class="industry-grid">
+      <div class="ind-card"><div class="ind-icon">🔧</div><div class="ind-name">Plumbing</div><div class="ind-sub">Residential & commercial</div></div>
+      <div class="ind-card"><div class="ind-icon">❄️</div><div class="ind-name">HVAC</div><div class="ind-sub">Heating & cooling</div></div>
+      <div class="ind-card"><div class="ind-icon">⚡</div><div class="ind-name">Electrical</div><div class="ind-sub">All service types</div></div>
+      <div class="ind-card"><div class="ind-icon">🏗️</div><div class="ind-name">Contractors</div><div class="ind-sub">General & specialty</div></div>
+      <div class="ind-card"><div class="ind-icon">🖌️</div><div class="ind-name">Painting</div><div class="ind-sub">Interior & exterior</div></div>
+      <div class="ind-card"><div class="ind-icon">🌿</div><div class="ind-name">Landscaping</div><div class="ind-sub">Lawn & hardscape</div></div>
+      <div class="ind-card"><div class="ind-icon">🍽️</div><div class="ind-name">Restaurants</div><div class="ind-sub">Local & independent</div></div>
+      <div class="ind-card"><div class="ind-icon">🪟</div><div class="ind-name">Roofing</div><div class="ind-sub">Repair & replacement</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-sec" id="demo">
+  <div class="demo-inner">
+    <div class="sec-tag">Live simulation — watch it work</div>
+    <h2>A missed call. A text back.<br>A job saved.</h2>
+    <p class="demo-lead">Hit the button below and watch the exact sequence play out — this happens automatically every single time a call goes unanswered at your business.</p>
+    <div class="demo-layout">
+      <div class="phone-col">
+        <div class="phone-frame">
+          <div class="pnotch"></div>
+          <div class="pscreen">
+            <div class="pbar"><span>9:41 AM</span><span>▪▪▪</span></div>
+            <div class="phead">
+              <div class="pav" id="pav">YB</div>
+              <div><div class="pname">Your Business</div><div class="psub" id="psub">Missed your call</div></div>
+            </div>
+            <div class="pmsgs" id="pmsgs">
+              <div class="ptyp" id="ptyp"><div class="pd"></div><div class="pd"></div><div class="pd"></div></div>
+              <div class="pm out" id="pm1">Hi — sorry we missed you! We'll get back to you very shortly. What can we help you with today?<div class="pmt r">Your Business · just now</div></div>
+              <div class="pm in" id="pm2">Hi yes — my furnace stopped working and it's pretty cold in here, need someone urgently<div class="pmt">Customer · just now</div></div>
+              <div class="pm out" id="pm3">Got it — a team member will call you within 30 minutes. You're in good hands!<div class="pmt r">Your Business · just now</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="steps-col">
+        <div class="step" id="ds1"><div class="step-ic">📞</div><div><div class="step-t">Missed call detected</div><div class="step-s">Caller ID captured the instant they hang up</div></div></div>
+        <div class="step" id="ds2">
+          <div class="step-ic">⚡</div>
+          <div>
+            <div class="step-t">Auto-text sent in under 60 seconds</div>
+            <div class="step-s">Branded SMS dispatched from your number</div>
+            <div class="speed-pill" id="spill"><div class="sp-dot"></div>Sending in <span id="scd">5</span>s...</div>
+          </div>
+        </div>
+        <div class="step" id="ds3"><div class="step-ic">💬</div><div><div class="step-t">Customer responds</div><div class="step-s">Job details captured — furnace repair, urgent</div></div></div>
+        <div class="step" id="ds4">
+          <div class="step-ic">🔔</div>
+          <div>
+            <div class="step-t">Lead logged. You get notified.</div>
+            <div class="step-s">Ready to call back and close the job</div>
+            <div class="lead-captured" id="lcap">
+              <div class="lc-top">✓ New lead captured</div>
+              <div class="lc-detail">Furnace repair · urgent · caller ready to book<br>Response time: 47 seconds</div>
+            </div>
+          </div>
+        </div>
+        <button class="run-btn" id="runBtn" onclick="runDemo()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="currentColor"/></svg>
+          Simulate a missed call
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="services-inner">
+    <div class="sec-tag" style="color:var(--blue2)">What we build for you</div>
+    <h2>Everything your business needs<br>to grow on autopilot.</h2>
+    <p class="svc-lead">We don't sell software. We build complete systems — designed specifically for your business, tested until they work, and handed to you ready to run.</p>
+    <div class="svc-grid">
+      <div class="svc featured">
+        <div class="svc-badge">Most Popular</div>
+        <div class="svc-icon">💬</div>
+        <div class="svc-title">Missed Call Text-Back</div>
+        <div class="svc-desc">The moment a call goes unanswered, your customer gets a text. Under 60 seconds. Every time. Without you lifting a finger.</div>
+        <ul class="svc-bullets">
+          <li>Instant SMS response with your business name</li>
+          <li>Captures job details before you call back</li>
+          <li>Lead dashboard — all enquiries in one place</li>
+          <li>Instant notification to your phone</li>
+          <li>Works 24/7 including weekends</li>
+        </ul>
+        <a href="#book" class="svc-cta">Get this built for me →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">🌐</div>
+        <div class="svc-title">Website + Google Presence</div>
+        <div class="svc-desc">A professional website and fully optimized Google Business Profile — so when someone searches your trade in your city, you show up first.</div>
+        <ul class="svc-bullets">
+          <li>Custom-built website — no templates</li>
+          <li>Google Business Profile setup & optimization</li>
+          <li>Local SEO so you rank in your area</li>
+          <li>Review generation system</li>
+          <li>Mobile-first design</li>
+        </ul>
+        <a href="#book" class="svc-cta">Get this built for me →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-icon">🤖</div>
+        <div class="svc-title">Full AI Automation Bundle</div>
+        <div class="svc-desc">The complete package — every system above, plus intelligent follow-up sequences, review automation, and a monthly strategy call to keep growing.</div>
+        <ul class="svc-bullets">
+          <li>Everything in the above two packages</li>
+          <li>AI-powered lead follow-up sequences</li>
+          <li>Automated review request system</li>
+          <li>Monthly analytics report</li>
+          <li>Dedicated growth strategy session</li>
+        </ul>
+        <a href="#book" class="svc-cta">Get this built for me →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw">
+  <div class="hiw-inner">
+    <div class="sec-tag">The process</div>
+    <h2>From first call to fully live<br>in under 48 hours.</h2>
+    <p class="hiw-lead">No tech setup on your end. No learning curve. No disruption to your team. We handle everything — you just show up and start getting more jobs.</p>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hs-num">1</div>
+        <div>
+          <div class="hs-title">We get on a 15-minute call</div>
+          <div class="hs-desc">Tell us about your business — how many calls you miss, what types of jobs you do, what you want your customers to feel when they reach out. That's it. No long questionnaires, no complicated onboarding forms.</div>
+          <div class="hs-tag">Day 0 — Free, no commitment</div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div class="hs-num">2</div>
+        <div>
+          <div class="hs-title">We build your system</div>
+          <div class="hs-desc">We set up your tracking number, write your branded auto-reply messages, configure your lead dashboard, and test every scenario — missed calls, after-hours, weekends, emergency requests — before you ever see it.</div>
+          <div class="hs-tag">Day 1–2 — We do all the work</div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div class="hs-num">3</div>
+        <div>
+          <div class="hs-title">You review and approve</div>
+          <div class="hs-desc">We walk you through the full system live. You see the auto-texts, the dashboard, the notifications. You test it yourself. If anything doesn't feel right, we fix it on the spot. You don't pay a dollar until you're happy with what you see.</div>
+          <div class="hs-tag">Day 2 — Your approval required</div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div class="hs-num">4</div>
+        <div>
+          <div class="hs-title">Go live. Start capturing leads.</div>
+          <div class="hs-desc">Flip the switch and the system starts running immediately. You'll get a monthly report showing every lead captured, every job recovered, and exactly what the automation is doing for your revenue. We stay in your corner every step of the way.</div>
+          <div class="hs-tag">Day 2+ — Runs itself from here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee">
+  <div class="guarantee-inner">
+    <div class="gtag">Our promise to you</div>
+    <h2>We build it first.<br><em>You decide if you want to pay.</em></h2>
+    <p class="guarantee-body">
+      We're so confident you'll love what we build that we put our money where our mouth is. <strong>We set up your entire system, show you exactly how it works, and if you don't think it's worth every penny — you walk away without spending a single dollar.</strong> No awkward cancellations. No contracts. No risk on your end. Ever.
+    </p>
+    <div class="g-pillars">
+      <div class="g-pillar">
+        <div class="gp-icon">🔨</div>
+        <div class="gp-title">Built before you pay</div>
+        <div class="gp-desc">We build the full system first. You see it working before we talk about money.</div>
+      </div>
+      <div class="g-pillar">
+        <div class="gp-icon">🚫</div>
+        <div class="gp-title">Zero contracts</div>
+        <div class="gp-desc">Month-to-month only. Cancel anytime with zero hassle and zero penalties.</div>
+      </div>
+      <div class="g-pillar">
+        <div class="gp-icon">🤝</div>
+        <div class="gp-title">You approve it first</div>
+        <div class="gp-desc">You test it yourself and give the green light. We don't bill until you're fully satisfied.</div>
+      </div>
+      <div class="g-pillar">
+        <div class="gp-icon">🛡️</div>
+        <div class="gp-title">No risk, full support</div>
+        <div class="gp-desc">We're your team. If anything stops working, we fix it — same day, no extra charge.</div>
+      </div>
+    </div>
+    <div class="g-stamp">
+      <div class="gs-top">Our</div>
+      <div class="gs-big">Zero Risk<br>Guarantee</div>
+      <div class="gs-bot">AG Automation</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-grid">
+      <div>
+        <div class="sec-tag" style="color:var(--blue2)">About AG Automation</div>
+        <h2>We're a Calgary team<br>serving all of Canada.</h2>
+        <p class="about-body">AG Automation was built for one reason: Canadian trades businesses and small companies are losing revenue every single day because they don't have the systems that big companies take for granted. We build those systems — at a fraction of the cost, with none of the complexity.</p>
+        <p class="about-body">We work with plumbers, HVAC companies, electricians, painters, landscapers, contractors, and restaurants from Vancouver to Halifax. If your business runs on phone calls and reputation, we know exactly what you need.</p>
+        <div class="about-details">
+          <div class="ad-item"><div class="ad-icon">📍</div> Based in Calgary, AB — serving all of Canada</div>
+          <div class="ad-item"><div class="ad-icon">🌐</div> <a href="https://agautomation.ca" style="color:var(--blue2);text-decoration:none;font-weight:600">agautomation.ca</a></div>
+          <div class="ad-item"><div class="ad-icon">📧</div> agautomationteam@gmail.com</div>
+          <div class="ad-item"><div class="ad-icon">📅</div> Book free: <a href="https://calendly.com/agautomation" style="color:var(--blue2);text-decoration:none;font-weight:600">calendly.com/agautomation</a></div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="ac-tag">Why it works</div>
+        <div class="ac-stat"><div class="ac-num">&lt; 60s</div><div class="ac-label">Auto-response speed — faster than any human</div></div>
+        <div class="ac-stat"><div class="ac-num">3–6</div><div class="ac-label">Extra jobs captured per month on average</div></div>
+        <div class="ac-stat"><div class="ac-num">48hr</div><div class="ac-label">From our first call to your system going live</div></div>
+        <div class="ac-divider"></div>
+        <div class="ac-web">Visit us at <a href="https://agautomation.ca" target="_blank">agautomation.ca</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="sec-tag" style="color:var(--blue2);text-align:center;margin-bottom:12px">Common questions</div>
+    <h2>Everything you're wondering about</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">Do I need to be tech-savvy to use this?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">Not at all. You don't install anything, configure anything, or learn any software. We build and run the whole system. Your only job is to answer the calls we send your way — and close the jobs.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">Will this work on my existing phone number?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">Yes. We set up a tracking number that routes through your existing setup. You keep your current number — nothing changes for your existing customers. The automation runs quietly in the background.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">What if I'm not happy with what you build?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">You walk away at zero cost. We build the full system, walk you through it live, and you test it yourself. If it's not exactly what you expected — or you simply decide it's not for you — there's no charge, no awkward conversation, nothing. We stand behind everything we build.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">How quickly does the auto-text go out?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">Under 60 seconds from the moment the call goes unanswered. In most cases it's closer to 30–45 seconds. The customer gets a response before they've even thought about calling someone else — that's the whole point.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">Is there a long-term contract?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">Never. Everything we offer is month-to-month. Cancel anytime with a single message — no penalties, no lock-in, no questions asked. We keep clients because they see results, not because we trap them.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="fq"><div class="fq-q">What does the first call look like?</div><div class="fq-icon">+</div></div>
+      <div class="fq-a">It's 15 minutes. We'll ask about your business, how you currently handle calls and leads, and what your biggest pain points are. No hard sell — we want to understand if we can actually help you before we talk about anything else. If we can, we'll tell you exactly what we'd build and what it looks like.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FOOTER -->
+<section class="cta-footer" id="book">
+  <div class="cta-inner">
+    <h2>Ready to stop leaving<br><span>jobs on the table?</span></h2>
+    <p>Book a free 15-minute call. We'll show you exactly what we'd build for your business — no pitch, no pressure, just a real conversation about what's possible.</p>
+    <a href="https://calendly.com/agautomation" class="cta-big-btn" target="_blank">
+      Book your free call →
+    </a>
+    <div class="cta-note">Or email us directly at agautomationteam@gmail.com — we'll reply same day.</div>
+    <div class="cta-links">
+      <a href="https://agautomation.ca" class="cta-link" target="_blank">agautomation.ca</a>
+      <a href="#demo" class="cta-link">Watch the demo</a>
+      <a href="#guarantee" class="cta-link">Our guarantee</a>
+    </div>
+  </div>
+</section>
+
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="sf-inner">
+    <div class="sf-left">
+      <div class="sf-logo">AG</div>
+      <div class="sf-info">
+        <strong style="color:rgba(255,255,255,.4)">AG Automation</strong><br>
+        Calgary, AB · Canada · <a href="https://agautomation.ca" target="_blank">agautomation.ca</a>
+      </div>
+    </div>
+    <div class="sf-right">Built with AI.<br>For the people who build Canada.</div>
+  </div>
+</footer>
+
+<script>
+// ── FOMO BARS ──
+var barsAnimated = false;
+function animateBars(){
+  if(barsAnimated) return;
+  barsAnimated = true;
+  var targets = [{id:'bar1',pct:62,pid:'pct1'},{id:'bar2',pct:24,pid:'pct2'},{id:'bar3',pct:14,pid:'pct3'}];
+  targets.forEach(function(t,i){
+    setTimeout(function(){
+      document.getElementById(t.id).style.width = t.pct+'%';
+      var start=0, end=t.pct, dur=1600;
+      var step = (ts,s) => {
+        if(!s) s=ts;
+        var prog = Math.min((ts-s)/dur,1);
+        var ease = 1-Math.pow(1-prog,3);
+        document.getElementById(t.pid).textContent = Math.round(ease*end)+'%';
+        if(prog<1) requestAnimationFrame(ts2=>step(ts2,s));
+      };
+      requestAnimationFrame(ts=>step(ts,null));
+    }, i*200);
+  });
+}
+if('IntersectionObserver' in window){
+  new IntersectionObserver(function(e){ if(e[0].isIntersecting) animateBars(); },{threshold:0.3})
+    .observe(document.querySelector('.ai-bar'));
+}
+
+// ── DEMO ──
+var running = false;
+function runDemo(){
+  if(running) return;
+  running = true;
+  var btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="currentColor"/></svg> Running...';
+  ['pm1','pm2','pm3'].forEach(function(id){ document.getElementById(id).classList.remove('vis'); });
+  ['ds1','ds2','ds3','ds4'].forEach(function(id){ document.getElementById(id).classList.remove('on'); });
+  document.getElementById('ptyp').classList.remove('on');
+  document.getElementById('spill').classList.remove('on');
+  document.getElementById('lcap').classList.remove('on');
+  document.getElementById('spill').style.background='rgba(22,184,130,.15)';
+  document.getElementById('spill').style.color='var(--teal2)';
+  document.getElementById('psub').textContent='Missed your call';
+
+  setTimeout(function(){ document.getElementById('ds1').classList.add('on'); },350);
+
+  setTimeout(function(){
+    document.getElementById('ds2').classList.add('on');
+    document.getElementById('spill').classList.add('on');
+    document.getElementById('ptyp').classList.add('on');
+    var c=5;
+    document.getElementById('scd').textContent=c;
+    var iv=setInterval(function(){
+      c--;
+      if(c<=0){
+        clearInterval(iv);
+        document.getElementById('spill').innerHTML='✓ Sent in 47 seconds';
+        document.getElementById('spill').style.background='rgba(22,184,130,.2)';
+      } else {
+        document.getElementById('scd').textContent=c;
+      }
+    },800);
+  },1000);
+
+  setTimeout(function(){
+    document.getElementById('ptyp').classList.remove('on');
+    document.getElementById('pm1').classList.add('vis');
+    document.getElementById('psub').textContent='Text sent · just now';
+  },5800);
+
+  setTimeout(function(){
+    document.getElementById('ds3').classList.add('on');
+    document.getElementById('pm2').classList.add('vis');
+    document.getElementById('psub').textContent='Customer replied';
+  },7600);
+
+  setTimeout(function(){ document.getElementById('pm3').classList.add('vis'); },9100);
+
+  setTimeout(function(){
+    document.getElementById('ds4').classList.add('on');
+    document.getElementById('lcap').classList.add('on');
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="currentColor"/></svg> Run again';
+    btn.disabled=false;
+    running=false;
+  },10800);
+}
+
+// auto-run demo on scroll
+var demoRan=false;
+if('IntersectionObserver' in window){
+  new IntersectionObserver(function(e){
+    if(e[0].isIntersecting && !demoRan){ demoRan=true; setTimeout(runDemo,600); }
+  },{threshold:0.35}).observe(document.getElementById('demo'));
+}
+
+// ── FAQ ──
+function toggleFaq(el){
+  var open = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(f){ f.classList.remove('open'); });
+  if(!open) el.classList.add('open');
+}
+</script>
+</body>
+</html>
